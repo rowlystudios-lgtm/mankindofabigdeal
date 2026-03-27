@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mankind of a Big Deal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream:    #F7F3ED;
+      --white:    #FFFFFF;
+      --ink:      #141414;
+      --ink-soft: #3A3A3A;
+      --muted:    #8A8480;
+      --gold:     #C4922A;
+      --gold-lt:  #F0D9A8;
+      --sage:     #7A9E87;
+      --sky:      #6B9BB8;
+      --rose:     #C47A6B;
+      --plum:     #7A6B9E;
+      --line:     rgba(20,20,20,0.1);
+      --shadow:   0 4px 40px rgba(20,20,20,0.08);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--cream);color:var(--ink);font-family:'Jost',sans-serif;overflow-x:hidden}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;background:rgba(247,243,237,0.94);backdrop-filter:blur(14px);padding:18px 48px;display:flex;justify-content:space-between;align-items:center;z-index:200;border-bottom:1px solid var(--line)}
+    .logo-box{display:inline-flex;align-items:center;justify-content:center;border:2.5px solid var(--ink);padding:6px 11px;text-decoration:none}
+    .logo-box span{font-size:9px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink);line-height:1.5;text-align:center}
+    .nav-cta{background:var(--ink);color:var(--white);padding:11px 26px;font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;transition:background .2s}
+    .nav-cta:hover{background:var(--gold)}
+
+    /* HERO */
+    .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden;background:#F7F3ED}
+    .hero-bg-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0.38;pointer-events:none;z-index:0}
+    .hero-glow{position:absolute;inset:0;background:rgba(247,243,237,0.45);pointer-events:none;z-index:1}
+    .hero>*:not(.hero-bg-img):not(.hero-glow){position:relative;z-index:2}
+    .hero-logo{display:inline-flex;border:4px solid var(--ink);padding:22px 34px;margin-bottom:48px;opacity:0;animation:fadeUp .9s ease forwards .2s}
+    .hero-logo span{font-size:clamp(18px,2.5vw,26px);font-weight:900;letter-spacing:0.08em;text-transform:uppercase;line-height:1.4;text-align:center}
+    .hero-tagline{font-size:clamp(36px,6vw,82px);font-weight:900;line-height:1.05;letter-spacing:-0.025em;max-width:820px;margin-bottom:24px;opacity:0;animation:fadeUp .9s ease forwards .4s}
+    .hero-tagline em{font-style:normal;color:var(--gold)}
+    .hero-sub{font-size:18px;font-weight:500;color:var(--ink-soft);max-width:500px;line-height:1.7;margin-bottom:52px;opacity:0;animation:fadeUp .9s ease forwards .6s}
+    .hero-cta{display:flex;flex-direction:column;align-items:center;gap:12px;opacity:0;animation:fadeUp .9s ease forwards .9s;text-decoration:none}
+    .hero-cta span{font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink)}
+    .scroll-arrow{width:44px;height:44px;border:2.5px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:bounce 2s ease infinite}
+    .scroll-arrow svg{width:16px;height:16px}
+    @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+
+    /* TICKER */
+    .ticker-wrap{overflow:hidden;background:var(--ink);padding:16px 0;white-space:nowrap}
+    .ticker{display:inline-flex;animation:ticker 32s linear infinite}
+    .ticker span{font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--cream);padding:0 28px}
+    .ticker span.dot{color:var(--gold);padding:0 6px}
+    @keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+    /* SECTIONS */
+    section{padding:100px 48px}
+    .section-label{font-size:10px;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:18px}
+    .section-title{font-size:clamp(30px,4vw,58px);font-weight:900;line-height:1.08;letter-spacing:-0.025em;margin-bottom:16px}
+    .section-sub{font-size:16px;color:var(--muted);line-height:1.75;max-width:540px}
+
+    /* QUIZ */
+    #quiz{background:var(--white);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .quiz-header{text-align:center;margin-bottom:60px}
+    .quiz-header .section-sub{margin:0 auto}
+    .quiz-progress{max-width:580px;margin:0 auto 48px}
+    .progress-track{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-bottom:10px}
+    .progress-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .5s ease;width:33%}
+    .progress-label{font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);text-align:center}
+    .quiz-step{display:none;max-width:720px;margin:0 auto;text-align:center}
+    .quiz-step.active{display:block}
+    .quiz-question{font-size:clamp(22px,3vw,38px);font-weight:900;line-height:1.2;margin-bottom:12px;letter-spacing:-0.015em}
+    .quiz-hint{font-size:14px;color:var(--muted);margin-bottom:40px}
+    .quiz-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+    .quiz-option{background:var(--cream);border:2px solid transparent;padding:24px 18px;cursor:pointer;transition:all .2s;text-align:left;position:relative}
+    .quiz-option:hover{border-color:var(--ink);background:var(--white);transform:translateY(-3px);box-shadow:var(--shadow)}
+    .quiz-option.selected{border-color:var(--gold);background:var(--gold-lt)}
+    .option-emoji{font-size:28px;margin-bottom:10px;display:block}
+    .option-label{font-size:15px;font-weight:700;display:block;margin-bottom:5px;line-height:1.3}
+    .option-sub{font-size:12px;color:var(--muted);line-height:1.5}
+    .quiz-nav{display:flex;justify-content:center;gap:16px;margin-top:40px;flex-wrap:wrap}
+    .btn-quiz-next{background:var(--ink);color:var(--white);border:none;padding:16px 44px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all .2s;opacity:.35;pointer-events:none}
+    .btn-quiz-next.ready{opacity:1;pointer-events:all}
+    .btn-quiz-next.ready:hover{background:var(--gold)}
+    .btn-back{background:transparent;color:var(--ink);border:2px solid var(--ink);padding:16px 32px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+    .btn-back:hover{background:var(--ink);color:var(--white)}
+
+    /* RESULT */
+    #result{display:none;max-width:720px;margin:0 auto;text-align:center}
+    #result.show{display:block}
+    .result-badge{display:inline-block;background:var(--gold);color:var(--white);font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;padding:8px 22px;margin-bottom:28px}
+    .result-title{font-size:clamp(28px,4vw,52px);font-weight:900;line-height:1.08;letter-spacing:-0.02em;margin-bottom:18px}
+    .result-body{font-size:16px;color:var(--ink-soft);line-height:1.8;margin-bottom:40px}
+    .result-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
+    .btn-primary{background:var(--ink);color:var(--white);padding:16px 36px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:2px solid var(--ink);cursor:pointer;transition:all .2s;display:inline-block}
+    .btn-primary:hover{background:var(--gold);border-color:var(--gold)}
+    .btn-outline{background:transparent;color:var(--ink);padding:16px 36px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;text-decoration:none;border:2px solid var(--ink);cursor:pointer;transition:all .2s;display:inline-block}
+    .btn-outline:hover{background:var(--ink);color:var(--white)}
+
+    /* CAUSES */
+    #causes{background:var(--cream)}
+    .causes-header{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:end;margin-bottom:52px}
+    .causes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .cause-tile{background:var(--white);padding:36px 28px;cursor:pointer;border:2px solid transparent;transition:all .25s;position:relative;overflow:hidden}
+    .cause-tile::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+    .cause-tile.climate::after{background:var(--sage)}
+    .cause-tile.mental::after{background:var(--sky)}
+    .cause-tile.economic::after{background:var(--gold)}
+    .cause-tile.community::after{background:var(--rose)}
+    .cause-tile.justice::after{background:var(--plum)}
+    .cause-tile:hover,.cause-tile.active{border-color:var(--ink);box-shadow:var(--shadow);transform:translateY(-4px)}
+    .cause-tile:hover::after,.cause-tile.active::after{transform:scaleX(1)}
+    .cause-icon{font-size:34px;margin-bottom:18px;display:block}
+    .cause-name{font-size:17px;font-weight:800;margin-bottom:10px;letter-spacing:-0.01em}
+    .cause-desc{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:18px}
+    .cause-stat{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase}
+    .cause-tile.climate .cause-stat{color:var(--sage)}
+    .cause-tile.mental .cause-stat{color:var(--sky)}
+    .cause-tile.economic .cause-stat{color:var(--gold)}
+    .cause-tile.community .cause-stat{color:var(--rose)}
+    .cause-tile.justice .cause-stat{color:var(--plum)}
+    .cause-detail{display:none;margin-top:28px;background:var(--white);border:2px solid var(--ink);padding:48px}
+    .cause-detail.show{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start}
+    .detail-title{font-size:26px;font-weight:900;margin-bottom:16px;letter-spacing:-0.02em}
+    .detail-body{font-size:15px;color:var(--ink-soft);line-height:1.8;margin-bottom:28px}
+    .detail-ways h4{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:16px;color:var(--muted)}
+    .way-item{display:flex;gap:12px;align-items:start;margin-bottom:12px}
+    .way-num{font-size:11px;font-weight:800;color:var(--gold);min-width:22px;padding-top:2px}
+    .way-text{font-size:14px;line-height:1.6;color:var(--ink-soft)}
+    .detail-stats{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .stat-box{background:var(--cream);padding:24px 20px;text-align:center}
+    .stat-num{font-size:32px;font-weight:900;letter-spacing:-0.03em;display:block;margin-bottom:8px}
+    .stat-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;line-height:1.4}
+
+    /* JOURNEY */
+    #journey{background:var(--ink);color:var(--white)}
+    #journey .section-label{color:var(--gold)}
+    #journey .section-title{color:var(--white)}
+    .journey-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px}
+    .journey-step{display:flex;gap:22px;padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.07);cursor:pointer;transition:all .2s}
+    .journey-step:first-child{border-top:1px solid rgba(255,255,255,0.07)}
+    .journey-step.active .step-num{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+    .journey-step.active .step-title{color:var(--gold)}
+    .step-num{width:38px;height:38px;border:2px solid rgba(255,255,255,0.18);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0;transition:all .3s}
+    .step-title{font-size:17px;font-weight:800;margin-bottom:5px;transition:color .3s}
+    .step-desc{font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6}
+    .journey-visual{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:44px;min-height:340px;display:flex;flex-direction:column;justify-content:center}
+    .visual-panel{display:none}
+    .visual-panel.active{display:block}
+    .visual-emoji{font-size:52px;margin-bottom:22px;display:block}
+    .visual-title{font-size:22px;font-weight:900;margin-bottom:14px;color:var(--white)}
+    .visual-body{font-size:14px;color:rgba(255,255,255,0.55);line-height:1.8}
+
+    /* WAITLIST */
+    #waitlist{background:var(--white);text-align:center;border-top:1px solid var(--line)}
+    .waitlist-inner{max-width:540px;margin:0 auto}
+    .waitlist-form{display:flex;flex-direction:column;gap:16px;margin-top:40px;text-align:left}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .field{display:flex;flex-direction:column;gap:7px}
+    .field label{font-size:10px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted)}
+    .field input,.field select{background:var(--cream);border:2px solid transparent;padding:13px 15px;font-family:'Jost',sans-serif;font-size:15px;color:var(--ink);outline:none;transition:border-color .2s}
+    .field input::placeholder{color:var(--muted)}
+    .field input:focus,.field select:focus{border-color:var(--gold);background:var(--white)}
+    .field select option{background:var(--white)}
+    .form-note{font-size:11px;color:var(--muted);text-align:center;line-height:1.6}
+    .btn-submit{background:var(--ink);color:var(--white);border:none;padding:18px;font-family:'Jost',sans-serif;font-size:13px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:background .2s;width:100%}
+    .btn-submit:hover{background:var(--gold)}
+
+    /* TWO BOXES */
+    .two-boxes{display:grid;grid-template-columns:1fr 1fr;gap:24px;text-align:left}
+    .contact-box{background:var(--cream);padding:40px 36px;border:2px solid var(--line);display:flex;flex-direction:column;gap:12px}
+    .box-label{font-size:10px;font-weight:700;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold)}
+    .box-title{font-size:22px;font-weight:900;letter-spacing:-0.02em;line-height:1.2}
+    .box-desc{font-size:13px;color:var(--muted);line-height:1.7;flex:1}
+    .email-row{display:flex;gap:0;margin-top:4px}
+    .email-row input{flex:1;background:var(--white);border:2px solid var(--line);border-right:none;padding:13px 16px;font-family:'Jost',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s}
+    .email-row input::placeholder{color:var(--muted)}
+    .email-row input:focus{border-color:var(--gold)}
+    .email-row button{background:var(--ink);color:var(--white);border:2px solid var(--ink);padding:13px 20px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.1em;cursor:pointer;white-space:nowrap;transition:background .2s}
+    .email-row button:hover{background:var(--gold);border-color:var(--gold)}
+    .box-note{font-size:11px;color:var(--muted);line-height:1.6}
+    .touch-fields{display:flex;flex-direction:column;gap:10px;margin-top:4px}
+    .touch-fields input,.touch-fields textarea{background:var(--white);border:2px solid var(--line);padding:13px 16px;font-family:'Jost',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s;resize:none}
+    .touch-fields input::placeholder,.touch-fields textarea::placeholder{color:var(--muted)}
+    .touch-fields input:focus,.touch-fields textarea:focus{border-color:var(--gold)}
+    .btn-touch{background:var(--ink);color:var(--white);border:none;padding:14px 28px;font-family:'Jost',sans-serif;font-size:12px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:background .2s;align-self:start;margin-top:4px}
+    .btn-touch:hover{background:var(--gold)}
+    @media(max-width:680px){.two-boxes{grid-template-columns:1fr}}
+    footer{background:var(--ink);color:var(--white);padding:48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px}
+    .footer-logo{display:inline-flex;border:2px solid rgba(255,255,255,0.25);padding:8px 12px}
+    .footer-logo span{font-size:8px;font-weight:900;letter-spacing:0.12em;text-transform:uppercase;color:var(--white);line-height:1.5;text-align:center}
+    .footer-right{font-size:11px;color:rgba(255,255,255,0.38);letter-spacing:0.08em;text-align:right;line-height:2}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+    .reveal.visible{opacity:1;transform:translateY(0)}
+
+    /* RESPONSIVE */
+    @media(max-width:900px){
+      nav{padding:16px 20px}
+      section{padding:64px 20px}
+      .causes-header{grid-template-columns:1fr;gap:20px}
+      .causes-grid{grid-template-columns:1fr 1fr}
+      .cause-detail.show{grid-template-columns:1fr}
+      .journey-grid{grid-template-columns:1fr}
+      .form-row{grid-template-columns:1fr}
+      footer{padding:32px 20px}
+    }
+    @media(max-width:580px){
+      .causes-grid{grid-template-columns:1fr}
+      .quiz-options{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo-box">
+    <span>MANKIND<br/>OF A BIG<br/>DEAL</span>
+  </a>
+  <a href="#waitlist" class="nav-cta">Join the Movement</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-bg-img" src="Backgroundheaderimage.jpg" alt="" />
+  <div class="hero-glow"></div>
+  <div class="hero-logo">
+    <span>MANKIND<br/>OF A BIG<br/>DEAL</span>
+  </div>
+  <h1 class="hero-tagline">What kind of world are we capable of <em>if we actually tried together?</em></h1>
+  <p class="hero-sub">Collective change starts with a single question. Tell us what matters to you — and we'll show you how to be part of something bigger than yourself.</p>
+  <a href="#quiz" class="hero-cta">
+    <span>Take the Quiz</span>
+    <div class="scroll-arrow">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </a>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>Mental Health</span><span class="dot">◆</span><span>Climate Action</span><span class="dot">◆</span><span>Economic Justice</span><span class="dot">◆</span><span>Community Power</span><span class="dot">◆</span><span>Human Rights</span><span class="dot">◆</span><span>Collective Change</span><span class="dot">◆</span><span>Mental Health</span><span class="dot">◆</span><span>Climate Action</span><span class="dot">◆</span><span>Economic Justice</span><span class="dot">◆</span><span>Community Power</span><span class="dot">◆</span><span>Human Rights</span><span class="dot">◆</span><span>Collective Change</span><span class="dot">◆</span>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="quiz-header reveal">
+    <div class="section-label">Find Your Why</div>
+    <h2 class="section-title">3 questions.<br/>Infinite impact.</h2>
+    <p class="section-sub">There's no right answer — just yours. Let's figure out where your energy belongs.</p>
+  </div>
+  <div class="quiz-progress reveal">
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">Question 1 of 3</div>
+  </div>
+
+  <!-- Q1 -->
+  <div class="quiz-step active" id="step1">
+    <p class="quiz-question">What keeps you up at night?</p>
+    <p class="quiz-hint">Pick the one that hits closest to home.</p>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="climate" onclick="selectOption(this,1)"><span class="option-emoji">🌍</span><span class="option-label">A planet in crisis</span><span class="option-sub">The climate emergency feels urgent and real</span></div>
+      <div class="quiz-option" data-value="mental" onclick="selectOption(this,1)"><span class="option-emoji">🧠</span><span class="option-label">Minds under pressure</span><span class="option-sub">Mental health is being ignored at every level</span></div>
+      <div class="quiz-option" data-value="economic" onclick="selectOption(this,1)"><span class="option-emoji">⚖️</span><span class="option-label">An uneven playing field</span><span class="option-sub">Too many people can't catch a break</span></div>
+      <div class="quiz-option" data-value="community" onclick="selectOption(this,1)"><span class="option-emoji">🏘️</span><span class="option-label">Disconnected communities</span><span class="option-sub">We've lost the art of looking out for each other</span></div>
+      <div class="quiz-option" data-value="justice" onclick="selectOption(this,1)"><span class="option-emoji">✊</span><span class="option-label">Rights still being fought for</span><span class="option-sub">Basic dignity shouldn't still be up for debate</span></div>
+    </div>
+    <div class="quiz-nav"><button class="btn-quiz-next" id="next1" onclick="nextStep(1)">Next →</button></div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="quiz-step" id="step2">
+    <p class="quiz-question">When you imagine change, it looks like...</p>
+    <p class="quiz-hint">Choose what resonates most.</p>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="systems" onclick="selectOption(this,2)"><span class="option-emoji">🏛️</span><span class="option-label">Systems shifting</span><span class="option-sub">Policy, law, and institutions actually changing</span></div>
+      <div class="quiz-option" data-value="people" onclick="selectOption(this,2)"><span class="option-emoji">🤝</span><span class="option-label">People helping people</span><span class="option-sub">Communities showing up for each other</span></div>
+      <div class="quiz-option" data-value="business" onclick="selectOption(this,2)"><span class="option-emoji">🏢</span><span class="option-label">Businesses doing better</span><span class="option-sub">Companies using their power for good</span></div>
+      <div class="quiz-option" data-value="individual" onclick="selectOption(this,2)"><span class="option-emoji">💡</span><span class="option-label">One person at a time</span><span class="option-sub">Everyday choices adding up to something real</span></div>
+    </div>
+    <div class="quiz-nav"><button class="btn-back" onclick="prevStep(2)">← Back</button><button class="btn-quiz-next" id="next2" onclick="nextStep(2)">Next →</button></div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="quiz-step" id="step3">
+    <p class="quiz-question">What's stopped you from acting before?</p>
+    <p class="quiz-hint">Be honest — we've all been here.</p>
+    <div class="quiz-options">
+      <div class="quiz-option" data-value="start" onclick="selectOption(this,3)"><span class="option-emoji">🗺️</span><span class="option-label">Didn't know where to start</span><span class="option-sub">The options felt overwhelming</span></div>
+      <div class="quiz-option" data-value="small" onclick="selectOption(this,3)"><span class="option-emoji">🔬</span><span class="option-label">Felt too small to matter</span><span class="option-sub">What difference can one person make?</span></div>
+      <div class="quiz-option" data-value="trust" onclick="selectOption(this,3)"><span class="option-emoji">🔍</span><span class="option-label">Didn't trust where it goes</span><span class="option-sub">Wanted transparency before committing</span></div>
+      <div class="quiz-option" data-value="nothing" onclick="selectOption(this,3)"><span class="option-emoji">🚀</span><span class="option-label">Nothing — I'm already acting</span><span class="option-sub">I just want to do more and go further</span></div>
+    </div>
+    <div class="quiz-nav"><button class="btn-back" onclick="prevStep(3)">← Back</button><button class="btn-quiz-next" id="next3" onclick="showResult()">See My Impact Path →</button></div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result">
+    <div class="result-badge" id="resultBadge">Your Impact Path</div>
+    <h2 class="result-title" id="resultTitle"></h2>
+    <p class="result-body" id="resultBody"></p>
+    <div class="result-actions">
+      <a href="#causes" class="btn-primary" onclick="highlightCause()">Explore Your Cause →</a>
+      <a href="#waitlist" class="btn-outline">Join the Movement</a>
+    </div>
+  </div>
+</section>
+
+<!-- CAUSES -->
+<section id="causes">
+  <div class="causes-header">
+    <div class="reveal">
+      <div class="section-label">Choose Your Cause</div>
+      <h2 class="section-title">Where does<br/>your energy go?</h2>
+    </div>
+    <p class="section-sub reveal">Tap any cause to go deeper — see the scale of the challenge, what real change looks like, and how collective action makes a dent.</p>
+  </div>
+  <div class="causes-grid">
+    <div class="cause-tile climate reveal" onclick="openCause('climate')">
+      <span class="cause-icon">🌍</span>
+      <div class="cause-name">Climate & Environment</div>
+      <p class="cause-desc">The planet's systems are under pressure. Action at every scale matters — from policy to purchasing.</p>
+      <span class="cause-stat">→ 3.3B people at risk by 2050</span>
+    </div>
+    <div class="cause-tile mental reveal" onclick="openCause('mental')">
+      <span class="cause-icon">🧠</span>
+      <div class="cause-name">Mental Health & Wellbeing</div>
+      <p class="cause-desc">The mental health crisis is global, underfunded, and deeply tied to inequality. Awareness alone isn't enough.</p>
+      <span class="cause-stat">→ 1 in 4 people affected globally</span>
+    </div>
+    <div class="cause-tile economic reveal" onclick="openCause('economic')">
+      <span class="cause-icon">⚖️</span>
+      <div class="cause-name">Economic Inequality</div>
+      <p class="cause-desc">The gap between those with access and those without is growing. Redistribution of opportunity is possible.</p>
+      <span class="cause-stat">→ Top 1% owns 43% of global wealth</span>
+    </div>
+    <div class="cause-tile community reveal" onclick="openCause('community')">
+      <span class="cause-icon">🏘️</span>
+      <div class="cause-name">Community & Local Impact</div>
+      <p class="cause-desc">The most powerful change often starts locally. Investing in communities creates ripples that reach everywhere.</p>
+      <span class="cause-stat">→ Local giving 3x more effective</span>
+    </div>
+    <div class="cause-tile justice reveal" onclick="openCause('justice')">
+      <span class="cause-icon">✊</span>
+      <div class="cause-name">Human Rights & Justice</div>
+      <p class="cause-desc">Systemic injustice is persistent but not permanent. Collective voices and sustained action shift the needle.</p>
+      <span class="cause-stat">→ 700M+ living without basic rights</span>
+    </div>
+  </div>
+  <div class="cause-detail" id="causeDetail"></div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="section-label reveal">How It Works</div>
+  <h2 class="section-title reveal">Your action,<br/>amplified.</h2>
+  <div class="journey-grid">
+    <div class="journey-steps">
+      <div class="journey-step active" onclick="setJourney(0)">
+        <div class="step-num">01</div>
+        <div><div class="step-title">Find Your Cause</div><p class="step-desc">Answer three questions. We help you identify where your passion and the world's need align most powerfully.</p></div>
+      </div>
+      <div class="journey-step" onclick="setJourney(1)">
+        <div class="step-num">02</div>
+        <div><div class="step-title">Direct Your Energy</div><p class="step-desc">Choose how you want to act — through brands you love, communities you're part of, or direct collective giving.</p></div>
+      </div>
+      <div class="journey-step" onclick="setJourney(2)">
+        <div class="step-num">03</div>
+        <div><div class="step-title">See the Ripple</div><p class="step-desc">Watch your contribution join thousands of others. Small acts become something undeniable when they move together.</p></div>
+      </div>
+      <div class="journey-step" onclick="setJourney(3)">
+        <div class="step-num">04</div>
+        <div><div class="step-title">Bring Others In</div><p class="step-desc">Change spreads through people, not platforms. Every person you bring in doubles the impact of everything you've done.</p></div>
+      </div>
+    </div>
+    <div class="journey-visual">
+      <div class="visual-panel active" id="visual0"><span class="visual-emoji">🎯</span><div class="visual-title">Clarity is the first act of change.</div><p class="visual-body">Most people care about everything and act on nothing. Our quiz cuts through the noise and gives you a clear starting point — because focused energy moves mountains.</p></div>
+      <div class="visual-panel" id="visual1"><span class="visual-emoji">⚡</span><div class="visual-title">Your everyday choices have leverage.</div><p class="visual-body">You don't have to change your whole life. The brands you buy from, the communities you're already part of — these are the channels through which change already flows.</p></div>
+      <div class="visual-panel" id="visual2"><span class="visual-emoji">🌊</span><div class="visual-title">One ripple. Thousands of people. Real results.</div><p class="visual-body">Transparency isn't a buzzword here — it's the foundation. Every action taken through Mankind of a Big Deal is tracked, verified, and reported back to you.</p></div>
+      <div class="visual-panel" id="visual3"><span class="visual-emoji">🔥</span><div class="visual-title">Movements are built by people, not algorithms.</div><p class="visual-body">The most powerful thing you can do for any cause is bring someone else into it. Mankind of a Big Deal is designed to grow through trust — person to person.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- WAITLIST -->
+<section id="waitlist">
+  <div class="waitlist-inner" style="max-width:800px">
+    <div class="section-label reveal">Get Involved</div>
+    <h2 class="section-title reveal">Ready to be<br/>part of it?</h2>
+    <p class="section-sub reveal" style="margin:0 auto 56px">Whether you want to stay in the loop or start a real conversation — we're here.</p>
+
+    <div class="two-boxes reveal">
+
+      <!-- BOX 1: Mailing List -->
+      <div class="contact-box">
+        <div class="box-label">Stay in the Loop</div>
+        <h3 class="box-title">Join the mailing list</h3>
+        <p class="box-desc">Be the first to know when something moves. No spam — just updates that matter.</p>
+        <div class="email-row">
+          <input type="email" id="mailingEmail" placeholder="your@email.com" />
+          <button onclick="joinMailingList()">Join →</button>
+        </div>
+        <p class="box-note" id="mailingNote">Your email goes directly to our inbox. Simple as that.</p>
+      </div>
+
+      <!-- BOX 2: Get in Touch -->
+      <div class="contact-box">
+        <div class="box-label">Start a Conversation</div>
+        <h3 class="box-title">Get in touch</h3>
+        <p class="box-desc">Questions, partnership ideas, thoughts on the movement — we want to hear all of it.</p>
+        <div class="touch-fields">
+          <input type="text" id="touchName" placeholder="Your name" />
+          <textarea id="touchMessage" placeholder="What's on your mind?" rows="3"></textarea>
+        </div>
+        <button class="btn-touch" onclick="sendMessage()">Send Message →</button>
+      </div>
+
+    </div>
+
+    <p class="reveal" style="text-align:center;font-size:12px;color:var(--muted);margin-top:32px;letter-spacing:0.08em">mankindofabigdeal@gmail.com</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo"><span>MANKIND<br/>OF A BIG<br/>DEAL</span></div>
+  <div class="footer-right">Los Angeles, CA<br/>© 2025 Mankind of a Big Deal. All rights reserved.<br/>A movement, not a moment.</div>
+</footer>
+
+<script>
+  const answers = {q1:null,q2:null,q3:null};
+
+  function selectOption(el, step) {
+    el.parentElement.querySelectorAll('.quiz-option').forEach(o=>o.classList.remove('selected'));
+    el.classList.add('selected');
+    answers['q'+step] = el.dataset.value;
+    const btn = document.getElementById('next'+step);
+    if(btn) btn.classList.add('ready');
+  }
+
+  function nextStep(current) {
+    if(!answers['q'+current]) return;
+    document.getElementById('step'+current).classList.remove('active');
+    document.getElementById('step'+(current+1)).classList.add('active');
+    const fills = {1:'33%',2:'66%'};
+    const labels = {1:'Question 2 of 3',2:'Question 3 of 3'};
+    document.getElementById('progressFill').style.width = fills[current];
+    document.getElementById('progressLabel').textContent = labels[current];
+  }
+
+  function prevStep(current) {
+    document.getElementById('step'+current).classList.remove('active');
+    document.getElementById('step'+(current-1)).classList.add('active');
+    const fills = {2:'33%',3:'66%'};
+    const labels = {2:'Question 1 of 3',3:'Question 2 of 3'};
+    document.getElementById('progressFill').style.width = fills[current];
+    document.getElementById('progressLabel').textContent = labels[current];
+  }
+
+  const results = {
+    climate:{badge:'Earth Guardian',title:"You're fighting for the planet.",body:"Climate anxiety is real — and it's a signal worth listening to. The frustration you feel is fuel. People who care as deeply as you do are the ones who make the biggest dent. Mankind of a Big Deal is building a way for that energy to move collectively — turning your daily choices into measurable environmental impact alongside thousands of others who feel exactly the same way."},
+    mental:{badge:'Wellbeing Champion',title:"You're fighting for people's minds.",body:"Mental health is the invisible crisis of our generation — underfunded, stigmatised, and deeply tied to every other inequality that exists. Your care for this issue puts you in a small but growing group of people demanding better. We're building something that helps that demand translate into real support, at scale, through collective action."},
+    economic:{badge:'Equity Builder',title:"You're fighting for a fairer world.",body:"Economic inequality isn't just about money — it's about access, dignity, and opportunity. The fact that it bothers you means you understand something essential: the system needs more people who refuse to look away. Mankind of a Big Deal is designed to create new pathways for collective economic empowerment — and we need people like you at the front of it."},
+    community:{badge:'Local Force',title:"You're fighting for the people around you.",body:"The most powerful change often starts within walking distance of where you live. Community builders like you understand something that gets overlooked: local investment has the highest return on impact. We're creating the tools to help people like you multiply that investment — connecting local action to a global movement."},
+    justice:{badge:'Rights Advocate',title:"You're fighting for basic dignity.",body:"Human rights aren't a political position — they're a floor. And you understand that fighting for that floor is the foundation on which everything else is built. Your drive for justice is exactly the kind of energy that collective action amplifies. Mankind of a Big Deal is built to help advocates like you create sustained, visible, accountable pressure for change."}
+  };
+
+  function showResult() {
+    if(!answers.q3) return;
+    const key = answers.q1 || 'community';
+    const r = results[key];
+    document.getElementById('step3').classList.remove('active');
+    document.getElementById('progressFill').style.width = '100%';
+    document.getElementById('progressLabel').textContent = 'Your path is ready';
+    document.getElementById('resultBadge').textContent = r.badge;
+    document.getElementById('resultTitle').textContent = r.title;
+    document.getElementById('resultBody').textContent = r.body;
+    document.getElementById('result').classList.add('show');
+    const causeMap={climate:'Climate & Environment',mental:'Mental Health & Wellbeing',economic:'Economic Inequality',community:'Community & Local Impact',justice:'Human Rights & Justice'};
+    const sel = document.getElementById('cause');
+    if(sel && causeMap[key]) Array.from(sel.options).forEach(o=>{if(o.text===causeMap[key])o.selected=true});
+  }
+
+  const causeData = {
+    climate:{color:'#7A9E87',title:'🌍 Climate & Environment',body:"The climate crisis isn't a future problem — it's already reshaping lives, displacing communities, and rewriting what's possible. But action at every level still matters. Consumer pressure, corporate accountability, policy advocacy, and community resilience-building all move the needle.",ways:['Support brands with verified carbon commitments','Direct collective funding to frontline climate communities','Amplify local environmental advocates and projects','Build pressure for systemic corporate accountability'],stats:[{num:'3.3B',label:'People at risk from climate impacts by 2050'},{num:'1.5°C',label:'The threshold we\'re racing to hold'},{num:'11 yrs',label:'Window for meaningful systemic action'},{num:'68%',label:'Of emissions from just 100 companies'}]},
+    mental:{color:'#6B9BB8',title:'🧠 Mental Health & Wellbeing',body:"One in four people will experience a mental health condition in their lifetime — yet global mental health spending represents less than 2% of healthcare budgets. The crisis is compounded by stigma, access gaps, and a system that treats mental health as secondary. Collective action can change what gets resourced.",ways:['Fund community-based mental health access programs','Support destigmatisation campaigns and education','Advocate for workplace mental health standards','Connect people to trusted local support networks'],stats:[{num:'1 in 4',label:'People affected by mental health conditions globally'},{num:'$1T',label:'Lost in productivity to depression & anxiety annually'},{num:'75%',label:'In low-income countries receive no treatment at all'},{num:'2%',label:'Average global health budget spent on mental health'}]},
+    economic:{color:'#C4922A',title:'⚖️ Economic Inequality',body:"The gap between those with access to opportunity and those without is widening globally. Economic inequality isn't just about income — it's about housing, education, healthcare, and the ability to participate in civic life. Collective economic empowerment creates real alternatives.",ways:['Direct spending to locally-owned and ethical businesses','Fund community land trusts and cooperative models','Support financial literacy and access programs','Advocate for living wages and fair labour standards'],stats:[{num:'43%',label:'Of global wealth owned by the top 1%'},{num:'689M',label:'People living on less than $1.90 a day'},{num:'2x',label:'Wealth gap has doubled in the last two decades'},{num:'$5T',label:'Needed annually to end extreme poverty by 2030'}]},
+    community:{color:'#C47A6B',title:'🏘️ Community & Local Impact',body:"The most durable change is built at the community level — where trust exists, where needs are clearest, and where investment multiplies most effectively. Strengthening local bonds, funding neighbourhood-level initiatives, and connecting community leaders to resources creates ripples that reach far beyond the local.",ways:['Invest in hyperlocal organisations and mutual aid networks','Support community-led infrastructure and programming','Connect local leaders to national networks of support','Create accountability between local institutions and residents'],stats:[{num:'3x',label:'More effective: local giving vs national programmes'},{num:'70%',label:'Of people want to give locally but don\'t know how'},{num:'$400B',label:'Potential unlocked by hyperlocal investment annually'},{num:'82%',label:'Of community initiatives succeed with sustained local support'}]},
+    justice:{color:'#7A6B9E',title:'✊ Human Rights & Justice',body:"Human rights are not a partisan issue — they are the foundation on which a functioning society rests. Today, over 700 million people live without the protection of basic rights. Sustained, collective advocacy — from individual voices to organised movements — remains the most proven force for systemic change.",ways:['Amplify the voices of frontline human rights defenders','Fund legal aid and advocacy organisations','Support policy reform campaigns with collective pressure','Create accountability for institutions that violate rights'],stats:[{num:'700M+',label:'People living without basic rights protections'},{num:'56',label:'Countries with significant democratic backsliding since 2010'},{num:'4x',label:'More effective: sustained movements vs one-off campaigns'},{num:'87%',label:'Of successful rights reforms driven by organised civil action'}]}
+  };
+
+  let activeCause = null;
+
+  function openCause(key) {
+    const detail = document.getElementById('causeDetail');
+    if(activeCause===key){
+      detail.classList.remove('show');
+      detail.innerHTML='';
+      activeCause=null;
+      document.querySelectorAll('.cause-tile').forEach(t=>t.classList.remove('active'));
+      return;
+    }
+    activeCause=key;
+    document.querySelectorAll('.cause-tile').forEach(t=>t.classList.remove('active'));
+    document.querySelector('.cause-tile.'+key).classList.add('active');
+    const d = causeData[key];
+    const stats = d.stats.map(s=>`<div class="stat-box"><span class="stat-num" style="color:${d.color}">${s.num}</span><span class="stat-label">${s.label}</span></div>`).join('');
+    const ways = d.ways.map((w,i)=>`<div class="way-item"><span class="way-num">0${i+1}</span><span class="way-text">${w}</span></div>`).join('');
+    detail.innerHTML=`<div><div class="detail-title">${d.title}</div><p class="detail-body">${d.body}</p><div class="detail-ways"><h4>How collective action helps</h4>${ways}</div><a href="#waitlist" class="btn-primary" style="margin-top:28px;display:inline-block">Join the Movement →</a></div><div class="detail-stats">${stats}</div>`;
+    detail.classList.add('show');
+    setTimeout(()=>detail.scrollIntoView({behavior:'smooth',block:'nearest'}),100);
+  }
+
+  function highlightCause(){const key=answers.q1;if(key)setTimeout(()=>openCause(key),400)}
+
+  function setJourney(idx){
+    document.querySelectorAll('.journey-step').forEach((s,i)=>s.classList.toggle('active',i===idx));
+    document.querySelectorAll('.visual-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
+  }
+
+  function submitForm(){
+    const email=document.getElementById('email').value;
+    const btn=document.getElementById('submitBtn');
+    if(!email){btn.textContent='Please enter your email ↑';setTimeout(()=>btn.textContent='Secure My Spot →',2000);return}
+    btn.textContent="You're on the list ✓";
+    btn.style.background='#7A9E87';
+    btn.style.pointerEvents='none';
+  }
+
+  function joinMailingList() {
+    const email = document.getElementById('mailingEmail').value.trim();
+    const note = document.getElementById('mailingNote');
+    if (!email || !email.includes('@')) {
+      note.textContent = 'Please enter a valid email address.';
+      note.style.color = 'var(--rose)';
+      return;
+    }
+    window.location.href = `mailto:mankindofabigdeal@gmail.com?subject=Mailing List Signup&body=Please add me to the Mankind of a Big Deal mailing list.%0A%0AEmail: ${encodeURIComponent(email)}`;
+    note.textContent = "✓ Your email client will open to complete the signup.";
+    note.style.color = 'var(--sage)';
+    note.style.fontWeight = '600';
+  }
+
+  function sendMessage() {
+    const name = document.getElementById('touchName').value.trim();
+    const message = document.getElementById('touchMessage').value.trim();
+    if (!message) {
+      alert("Please add a message before sending.");
+      return;
+    }
+    const subject = name ? `Message from ${name}` : 'Message via MOBAD Website';
+    const body = name
+      ? `Name: ${name}%0A%0A${encodeURIComponent(message)}`
+      : encodeURIComponent(message);
+    window.location.href = `mailto:mankindofabigdeal@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+  }
+  const reveals = document.querySelectorAll('.reveal');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')})},{threshold:0.1});
+  reveals.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
